@@ -43,14 +43,12 @@
             {!! $topic->body !!}
           </div>
 
+          @can('update', $topic)
           <div class="operate">
             <hr>
-            @can('update', $topic)
             <a href="{{ route('topics.edit', $topic->id) }}" class="btn btn-outline-secondary btn-sm" role="button">
               <i class="far fa-edit"></i> 编辑
             </a>
-            @endcan
-            @can('destroy', $topic)
             <form action="{{ route('topics.destroy', $topic->id) }}" method="post"
                   style="display: inline-block;"
                   onsubmit="return confirm('您确定要删除吗？');">
@@ -60,11 +58,20 @@
                 <i class="far fa-trash-alt"></i> 删除
               </button>
             </form>
-            @endcan
           </div>
+          @endcan
 
         </div>
       </div>
+
+      {{-- 用户回复列表 --}}
+      <div class="card topic-reply mt-4">
+        <div class="card-body">
+          @include('topics._reply_box', ['topic' => $topic])
+          @include('topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
+        </div>
+      </div>
+
     </div>
   </div>
 @stop
