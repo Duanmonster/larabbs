@@ -40,8 +40,7 @@
             <img src="{{ Auth::user()->avatar }}" class="img-responsive img-circle" width="30px" height="30px">
             {{ Auth::user()->name }}
           </a>
-{{--          <div class="dropdown-menu" aria-labelledby="navbarDropdown">--}}
-          <ul class="dropdown-menu" role="menu">
+          <ul class="dropdown-menu" role="menu" aria-labelledby="navbarDropdown">
             @can('manage_contents')
               <li>
               <a class="dropdown-item" href="{{ url(config('administrator.uri')) }}">
@@ -74,6 +73,5 @@
           </ul>
         @endguest
         </ul>
-    </div>
   </div>
 </nav>
