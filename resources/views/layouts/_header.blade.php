@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Left Side Of Navbar -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item {{ active_class(if_route('topics.index')) }}"><a class="nav-link" href="{{ route('topics.index') }}">话题</a></li>
@@ -21,10 +21,10 @@
       <!-- Right Side Of Navbar -->
       <ul class="navbar-nav navbar-right">
         <!-- Authentication Links -->
-        @guest
+      @guest
         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">登录</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">注册</a></li>
-        @else
+      @else
         <li class="nav-item">
           <a class="nav-link mt-1 mr-3 font-weight-bold" href="{{ route('topics.create') }}">
             <i class="fa fa-plus"></i>
@@ -40,30 +40,40 @@
             <img src="{{ Auth::user()->avatar }}" class="img-responsive img-circle" width="30px" height="30px">
             {{ Auth::user()->name }}
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+{{--          <div class="dropdown-menu" aria-labelledby="navbarDropdown">--}}
+          <ul class="dropdown-menu" role="menu">
             @can('manage_contents')
+              <li>
               <a class="dropdown-item" href="{{ url(config('administrator.uri')) }}">
                 <i class="fas fa-tachometer-alt mr-2"></i>
                 管理后台
               </a>
-              <div class="dropdown-divider"></div>
+              </li>
             @endcan
+            <li>
             <a class="dropdown-item" href="{{ route('users.show', Auth::id()) }}">
               <i class="far fa-user mr-2"></i>
               个人中心
             </a>
-            <a class="dropdown-item" href="{{ route('users.edit', Auth::id()) }}">编辑资料</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" id="logout" href="#">
-              <form action="{{ route('logout') }}" method="POST">
-                {{ csrf_field() }}
-                <button class="btn btn-block btn-danger" type="submit" name="button">退出</button>
-              </form>
-            </a>
-          </div>
-          </li>
+            </li>
+              <li>
+            <a class="dropdown-item" href="{{ route('users.edit', Auth::id()) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>编辑资料</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                  <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                  退出登录
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+                </form>
+              </li>
+          </ul>
         @endguest
-      </ul>
+        </ul>
     </div>
   </div>
 </nav>
