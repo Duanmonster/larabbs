@@ -37,6 +37,13 @@ class TopicsController extends Controller
             return redirect($topic->link(), 301);
         }
 
+        //话题查看数量加1
+        if(Auth::id() <> $topic->user->id){
+            $topic->increment('view_count', 1);
+            $topic->save();
+        }
+
+
         return view('topics.show', compact('topic'));
     }
 

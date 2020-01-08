@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Auth;
+
 class Topic extends Model
 {
     protected $fillable = ['title', 'body', 'category_id', 'excerpt', 'slug'];
@@ -53,9 +55,15 @@ class Topic extends Model
         return route('topics.show', array_merge([$this->id, $this->slug], $params));
     }
 
-    public function updateReplyCount()
+    public function updateReplyInfo($update_last_user = true)
     {
-        $this->reply_count = $this->replies->count();
+        $this->reply_count = $this->getReplyCount();
+        $update_last_user && ($this->last_reply_user_id = Auth::id());
         $this->save();
+    }
+
+    public function getReplyCount()
+    {
+        return $this->replies->count();
     }
 }

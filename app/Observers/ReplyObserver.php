@@ -12,9 +12,11 @@ class ReplyObserver
 {
     public function created(Reply $reply)
     {
-        $reply->topic->updateReplyCount();
+        //更新话题的最后回复信息
+        $reply->topic->updateReplyInfo();
         // 通知话题作者有新的评论
         $reply->topic->user->notify(new TopicReplied($reply));
+
     }
 
     public function creating(Reply $reply)
@@ -24,6 +26,6 @@ class ReplyObserver
 
     public function deleted(Reply $reply)
     {
-        $reply->topic->updateReplyCount();
+        $reply->topic->updateReplyInfo(false);
     }
 }
